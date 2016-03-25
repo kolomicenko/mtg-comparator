@@ -3,7 +3,7 @@
 // TODO hard-set price limit (for cards downloading) - e.g., do not bother with cards cheaper than $2
 // TODO rytir: buy = 70% of sell, valid for all cards?
 
-$default_rate = 24.7;
+$default_rate = 24.3;
 $default_limit = 0;
 
 if (!isset($_GET['rate']) or !isset($_GET['limit'])) {
