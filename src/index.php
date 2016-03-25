@@ -80,13 +80,13 @@ td:first-child {
 require "connect.php";
 
 // number of non-matched editions for the div on top-right
-$nonmatched_editions_cnt = query('select min(cnt) as nonmatched from (select count(*) as cnt from edition e join shop s on e.shop_id = s.id where not exists (select * from editions_pair where edition1 = e.id) group by s.id) as a')->fetchColumn();
+$nonmatched_editions_cnt = DB::query('select min(cnt) as nonmatched from (select count(*) as cnt from edition e join shop s on e.shop_id = s.id where not exists (select * from editions_pair where edition1 = e.id) group by s.id) as a')->fetchColumn();
 
 
-query("SET @rate_usd_kc := ?", $_GET['rate']);
-query("SET @profit_limit := ?", $_GET['limit']);
+DB::query("SET @rate_usd_kc := ?", $_GET['rate']);
+DB::query("SET @profit_limit := ?", $_GET['limit']);
 
-$result = query("select a.name, a.is_foil, a.quality, a.language, a.edition_name, a.sell_id, a.buy_id, round((a.buy_price / @rate_usd_kc - a.sell_price) * a.pieces, 2) as profit, round(a.sell_price * a.pieces, 2) as purchase_total, round((a.buy_price / @rate_usd_kc - a.sell_price) * a.pieces / (a.sell_price * a.pieces), 2) as profit_to_purchase, a.pieces
+$result = DB::query("select a.name, a.is_foil, a.quality, a.language, a.edition_name, a.sell_id, a.buy_id, round((a.buy_price / @rate_usd_kc - a.sell_price) * a.pieces, 2) as profit, round(a.sell_price * a.pieces, 2) as purchase_total, round((a.buy_price / @rate_usd_kc - a.sell_price) * a.pieces / (a.sell_price * a.pieces), 2) as profit_to_purchase, a.pieces
 from
 (select card_sell.name as name, if(card_sell.is_foil, 'foil', 'non-foil') as is_foil, card_sell.quality as quality, card_sell.language as language, e.name as edition_name, card_sell.id as sell_id, card_buy.id buy_id, card_buy.price as buy_price, card_sell.price as sell_price, least(card_buy.pieces, card_sell.pieces) as pieces
 from card card_sell inner join card card_buy on card_sell.name = card_buy.name inner join edition e on e.id = card_sell.edition_id

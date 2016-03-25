@@ -11,7 +11,7 @@ abstract class Matcher {
         }
 
         try {
-            $result = query('INSERT INTO card(shop_id, name, is_foil, edition_id, quality, language, price, pieces, direction)
+            $result = DB::query('INSERT INTO card(shop_id, name, is_foil, edition_id, quality, language, price, pieces, direction)
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 $this->get_shop_id(), $name, $is_foil, $edition_id, $quality, $language, $price, $pieces, $this->get_direction()
             );
@@ -24,12 +24,12 @@ abstract class Matcher {
     }
 
     public function create_pairs_with_edition($edition_name, $edition_id) {
-        $result = query('SELECT id FROM edition WHERE name = ? AND shop_id != ?', $edition_name, $this->get_shop_id());
+        $result = DB::query('SELECT id FROM edition WHERE name = ? AND shop_id != ?', $edition_name, $this->get_shop_id());
 
         while ($row = $result->fetch()) {
             // process the same editions in other shops
             try {
-                query('INSERT INTO editions_pair(edition1, edition2) VALUES(?, ?), (?, ?)',
+                DB::query('INSERT INTO editions_pair(edition1, edition2) VALUES(?, ?), (?, ?)',
                     $edition_id, $row['id'], $row['id'], $edition_id);
             } catch (PDOException $e) {
                 warning('Could not create pairs with edition name: "' . $edition_name . '", error: ' . $e->getMessage());
@@ -39,7 +39,7 @@ abstract class Matcher {
 
     public function create_edition($edition) {
         try {
-            $result = query('INSERT INTO edition(shop_id, name) VALUES(?, ?)', $this->get_shop_id(), $edition);
+            $result = DB::query('INSERT INTO edition(shop_id, name) VALUES(?, ?)', $this->get_shop_id(), $edition);
         } catch (PDOException $e) {
             warning('Could not create new edition with name "' . $edition . '", error: ' . $e->getMessage());
             return null;
@@ -54,7 +54,7 @@ abstract class Matcher {
     public function process_edition($edition) {
         $edition_id = null;
 
-        $result = query('SELECT id FROM edition WHERE name = ? AND shop_id = ?', $edition, $this->get_shop_id())->fetch();
+        $result = DB::query('SELECT id FROM edition WHERE name = ? AND shop_id = ?', $edition, $this->get_shop_id())->fetch();
 
         if (!$result) {
             $edition_id = $this->create_edition($edition);
@@ -66,7 +66,7 @@ abstract class Matcher {
     }
 
     public function clear_cards() {
-        $result = query('DELETE FROM card WHERE shop_id = ?', $this->get_shop_id());
+        $result = DB::query('DELETE FROM card WHERE shop_id = ?', $this->get_shop_id());
 
         info('Deleted all ' . $result->rowCount() . ' cards in shop ' . $this->get_shop_id());
     }

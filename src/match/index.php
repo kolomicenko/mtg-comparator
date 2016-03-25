@@ -19,7 +19,7 @@ if (isset($_POST['shop']) && is_array($_POST['shop'])) {
     $status = 0;
 
     if (count($pair) == 2) {
-        query('INSERT INTO editions_pair(edition1, edition2) VALUES(?, ?), (?, ?)',
+        DB::query('INSERT INTO editions_pair(edition1, edition2) VALUES(?, ?), (?, ?)',
                 $pair[0], $pair[1], $pair[1], $pair[0]);
 
         $status = 1;
@@ -43,7 +43,7 @@ if (isset($_POST['delete']) && is_array($_POST['delete'])) {
     $status = 0;
 
     if (count($pair) == 2) {
-        query('DELETE FROM editions_pair WHERE edition1 = ? AND edition2 = ? OR edition1 = ? AND edition2 = ?',
+        DB::query('DELETE FROM editions_pair WHERE edition1 = ? AND edition2 = ? OR edition1 = ? AND edition2 = ?',
                 $pair[0], $pair[1], $pair[1], $pair[0]);
 
         $status = 2;
@@ -78,9 +78,9 @@ if (isset($_GET['status'])) {
 
 
 // get and display non matched editions
-$not_matched_editions = query('select e.id as edition_id, s.id as shop_id, e.name as edition_name from edition e join shop s on e.shop_id = s.id where not exists (select * from editions_pair where edition1 = e.id) order by edition_name');
+$not_matched_editions = DB::query('select e.id as edition_id, s.id as shop_id, e.name as edition_name from edition e join shop s on e.shop_id = s.id where not exists (select * from editions_pair where edition1 = e.id) order by edition_name');
 
-$shops_result = query('select id, name from shop');
+$shops_result = DB::query('select id, name from shop');
 
 // init shops
 $shops = array();
@@ -165,7 +165,7 @@ foreach ($editions_by_shops as $shop_id => $editions) {
 <?php
 
 // get and display matched editions
-$matched_editions = query('select e1.id as e1_id, e1.name as e1_name, e1.shop_id as e1_shop_id, e2.id as e2_id, e2.name as e2_name, e2.shop_id as e2_shop_id from editions_pair p join edition e1 on e1.id = p.edition1 join edition e2 on e2.id = p.edition2 where e1.shop_id < e2.shop_id order by e1.name');
+$matched_editions = DB::query('select e1.id as e1_id, e1.name as e1_name, e1.shop_id as e1_shop_id, e2.id as e2_id, e2.name as e2_name, e2.shop_id as e2_shop_id from editions_pair p join edition e1 on e1.id = p.edition1 join edition e2 on e2.id = p.edition2 where e1.shop_id < e2.shop_id order by e1.name');
 
 while ($editions_pair = $matched_editions->fetch()) {
     ?> <tr><td><?php echo $editions_pair['e1_name']; ?><td><?php echo $editions_pair['e2_name']; ?>
