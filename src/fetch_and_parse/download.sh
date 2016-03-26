@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# cd to this script's location
+cd $(dirname "$(readlink -f "$0")")
+
 # before running, set error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE for php cli
 
 # read the MYSQL connection details from apache conf and set them as env variables
