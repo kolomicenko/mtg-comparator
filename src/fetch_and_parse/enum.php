@@ -13,6 +13,6 @@ abstract class Enum
     public static $WORKER_COUNT = 10;
 
     public static $FIREBALL_QUEUE_NAME = 'fireball_queue';
-    public static $RYTIR_QUEUE_NAME = 'fireball_queue';
+    public static $RYTIR_QUEUE_NAME = 'rytir_queue';
 }
 
