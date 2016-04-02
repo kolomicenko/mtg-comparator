@@ -45,7 +45,7 @@ abstract class Matcher {
             return null;
         }
 
-        $edition_id = Database::lastInsertId();
+        $edition_id = DB::lastInsertId();
         $this-> create_pairs_with_edition($edition, $edition_id);
 
         return $edition_id;

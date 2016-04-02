@@ -45,27 +45,18 @@ abstract class Downloader {
 
     public function download() {
         $start_time = time();
-        $page_nr = 1;
 
-        while (true) {
-            $url = $this->get_url_by_page($page_nr);
-
-            if ($this->get_and_parse_page($url)) {
-                info("Page " . $page_nr . " processed.");
-            } else {
-                info("No more cards found. Exiting.");
-                break;
-            }
-
-            $page_nr += 1;
-        }
+        $this->get_client()->process();
 
         info("Total time in seconds: " . (time() - $start_time));
     }
 
     // template method
-    protected abstract function get_url_by_page($page_nr);
+    public abstract function get_url_by_page($page_nr);
 
     // template method
     protected abstract function get_parser($page_content);
+
+    // template method
+    protected abstract function get_client();
 }

@@ -13,6 +13,8 @@ rm /tmp/xxx
 # create a full DB back-up
 mysqldump -u "$MYSQL_USER" -p"$MYSQL_PASS" "$MYSQL_DB" | gzip > data/mtg_`date '+%s'`.sql.gz
 
+# TODO: should we clean the two rabbitmq queues?
+
 # download the cards
 nohup php download_from_fireball_into_db.php > nohup_fireball.out 2>&1&
-nohup php download_from_rytir_into_db.php > nohup_rytir.out 2>&1&
+# nohup php download_from_rytir_into_db.php > nohup_rytir.out 2>&1&
