@@ -6,10 +6,10 @@ class DB
 
     public static function connect(){
         try {
-            $host = getenv('MYSQL_HOST');
-            $dbname = getenv('MYSQL_DB');
-            $user = getenv('MYSQL_USER');
-            $pass = getenv('MYSQL_PASS');
+            $host = getenv('MTG_MYSQL_HOST');
+            $dbname = getenv('MTG_MYSQL_DB');
+            $user = getenv('MTG_MYSQL_USER');
+            $pass = getenv('MTG_MYSQL_PASS');
 
             self::$dbh = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 

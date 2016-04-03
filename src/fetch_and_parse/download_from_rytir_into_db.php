@@ -11,7 +11,7 @@ exec('pkill -f "php rytir/start_worker.php"');
 
 // start workers for processing download jobs
 for ($i = 0; $i < Enum::$WORKER_COUNT; $i++) {
-    exec('php rytir/start_worker.php >> nohup_rytir.out 2>&1 &');
+    exec('php rytir/start_worker.php >> ../../log/nohup_rytir.out 2>&1 &');
 }
 
 // clear cards

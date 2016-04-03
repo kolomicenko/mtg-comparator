@@ -1,3 +1,5 @@
 vendor/
 composer.phar
 example/
+log/
+backup/data/

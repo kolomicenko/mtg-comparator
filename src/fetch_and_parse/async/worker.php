@@ -10,7 +10,11 @@ abstract class Worker {
     private $_connection = null;
 
     function __construct() {
-        $this->_connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+        $host = getenv('MTG_RABBITMQ_HOST');
+        $user = getenv('MTG_RABBITMQ_USER');
+        $pass = getenv('MTG_RABBITMQ_PASS');
+
+        $this->_connection = new AMQPStreamConnection($host, 5672, $user, $pass);
         $this->_channel = $this->_connection->channel();
 
         $this->_channel->queue_declare($this->get_queue_name(), false, false, false, false);

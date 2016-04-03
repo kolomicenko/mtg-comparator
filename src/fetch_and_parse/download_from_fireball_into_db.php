@@ -11,7 +11,7 @@ exec('pkill -f "php fireball/start_worker.php"');
 
 // start workers for processing download jobs
 for ($i = 0; $i < Enum::$WORKER_COUNT; $i++) {
-    exec('php fireball/start_worker.php >> nohup_fireball.out 2>&1 &');
+    exec('php fireball/start_worker.php >> ../../log/nohup_fireball.out 2>&1 &');
 }
 
 // clear cards
