@@ -11,7 +11,7 @@ while read line; do eval "$( echo $line | sed 's/SetEnv \([^ ]*\) /export \1=/' 
 rm /tmp/xxx
 
 # create a full DB back-up
-mysqldump -u "$MYSQL_USER" -p"$MYSQL_PASS" "$MYSQL_DB" | gzip > ../../backup/data/mtg_`date '+%s'`.sql.gz
+mysqldump -u "$MTG_MYSQL_USER" -p"$MTG_MYSQL_PASS" "$MTG_MYSQL_DB" | gzip > ../../backup/data/mtg_`date '+%s'`.sql.gz
 
 # TODO: should we clean the two rabbitmq queues?
 
