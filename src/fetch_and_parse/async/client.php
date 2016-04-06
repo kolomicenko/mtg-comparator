@@ -64,7 +64,7 @@ abstract class Client {
         }
 
         $this->_channel->close();
-        $connection->close();
+        $this->_connection->close();
     }
 
     // create jobs up to the limit and send them to the queue

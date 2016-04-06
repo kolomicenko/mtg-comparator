@@ -50,7 +50,7 @@ abstract class Worker {
         }
 
         $this->_channel->close();
-        $connection->close();
+        $this->_connection->close();
     }
 
     private function _confirm_back_to_client($text) {
