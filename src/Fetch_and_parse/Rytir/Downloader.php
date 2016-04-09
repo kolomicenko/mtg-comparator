@@ -2,7 +2,7 @@
 
 namespace MTG_Comparator\Fetch_and_parse\Rytir;
 
-class Downloader extends MTG_Comparator\Fetch_and_parse\Downloader {
+class Downloader extends \MTG_Comparator\Fetch_and_parse\Downloader {
 
     public function get_url_by_page($page_nr) {
         $limit_placeholder = '__LIMIT__';

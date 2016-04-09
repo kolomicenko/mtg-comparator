@@ -5,8 +5,6 @@ require_once '../core.php';
 use MTG_Comparator\Fetch_and_parse\Rytir as Rytir;
 use MTG_Comparator\Fetch_and_parse\Enum;
 
-require_once dirname(__FILE__) . "/enum.php";
-
 // kill all existing workers
 exec('pkill -f "php Rytir/start_worker.php"');
 

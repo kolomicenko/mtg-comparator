@@ -4,7 +4,7 @@ namespace MTG_Comparator\Fetch_and_parse\Rytir;
 
 use MTG_Comparator\Fetch_and_parse\Enum;
 
-class Parser extends MTG_Comparator\Fetch_and_parse\Parser {
+class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
 
     private static $_QUALITY_MAP = array(
         "lightly played" => 'LIGHTLY',
