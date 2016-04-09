@@ -2,7 +2,9 @@
 
 // TODO enable multiselects and pairing one edition with more editions from other shop?
 
-require_once "../connect.php";
+require_once __DIR__ . '/../core.php';
+
+use MTG_Comparator\DB;
 
 // create new pair
 if (isset($_POST['shop']) && is_array($_POST['shop'])) {

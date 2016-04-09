@@ -1,6 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . "/../enum.php";
+namespace MTG_Comparator\Fetch_and_parse\Async;
+
+use MTG_Comparator\Fetch_and_parse\Enum;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;

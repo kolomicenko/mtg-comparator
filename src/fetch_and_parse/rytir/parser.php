@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__FILE__) . '/../parser.php';
-require_once dirname(__FILE__) . '/matcher.php';
-require_once dirname(__FILE__) . "/../enum.php";
+namespace MTG_Comparator\Fetch_and_parse\Rytir;
 
-class Rytir_Parser extends Parser {
+use MTG_Comparator\Fetch_and_parse\Enum;
+
+class Parser extends MTG_Comparator\Fetch_and_parse\Parser {
 
     private static $_QUALITY_MAP = array(
         "lightly played" => 'LIGHTLY',
@@ -14,7 +14,7 @@ class Rytir_Parser extends Parser {
     function __construct($html) {
         parent::__construct($html);
 
-        $this->_matcher = new Rytir_Matcher();
+        $this->_matcher = new Matcher();
     }
 
     private function _process_card_name($name) {

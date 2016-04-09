@@ -1,8 +1,9 @@
 <?php
 
 require_once '../core.php';
-require_once 'rytir/downloader.php';
-require_once 'rytir/matcher.php';
+
+use MTG_Comparator\Fetch_and_parse\Rytir as Rytir;
+use MTG_Comparator\Fetch_and_parse\Enum;
 
 require_once dirname(__FILE__) . "/enum.php";
 
@@ -15,10 +16,10 @@ for ($i = 0; $i < Enum::$WORKER_COUNT; $i++) {
 }
 
 // clear cards
-(new Rytir_Matcher())->clear_cards();
+(new Rytir\Matcher())->clear_cards();
 
 // start downloading
-(new Rytir_Downloader())->download();
+(new Rytir\Downloader())->download();
 
 // TODO:
 // Unknown variant "Beast" of card "Token".

@@ -1,5 +1,7 @@
 <?php
 
+namespace MTG_Comparator\Fetch_and_parse;
+
 abstract class Downloader {
 
     public function get_page($url) {

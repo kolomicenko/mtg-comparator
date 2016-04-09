@@ -1,5 +1,7 @@
 <?php
 
+namespace MTG_Comparator;
+
 class DB
 {
     private static $dbh = null;
@@ -11,10 +13,10 @@ class DB
             $user = getenv('MTG_MYSQL_USER');
             $pass = getenv('MTG_MYSQL_PASS');
 
-            self::$dbh = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+            self::$dbh = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 
-            self::$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
+            self::$dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        } catch (\PDOException $e) {
             echo $e->getMessage();
 
             exit();
@@ -27,7 +29,7 @@ class DB
         $statement = self::$dbh->prepare(array_shift($args));
         $statement->execute($args);
 
-        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
 
         return $statement;
     }

@@ -1,15 +1,16 @@
 <?php
 
-require_once dirname(__FILE__) . '/../async/worker.php';
-require_once dirname(__FILE__) . "/../enum.php";
-require_once dirname(__FILE__) . "/downloader.php";
+namespace MTG_Comparator\Fetch_and_parse\Rytir;
 
-class Rytir_Worker extends Worker {
+use MTG_Comparator\Fetch_and_parse\Enum;
+use MTG_Comparator\Fetch_and_parse\Async as Async;
+
+class Worker extends Async\Worker {
 
     private $_downloader = null;
 
     function __construct() {
-        $this->_downloader = new Rytir_Downloader();
+        $this->_downloader = new Downloader();
 
         parent::__construct();
     }

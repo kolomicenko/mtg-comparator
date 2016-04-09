@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . '/core.php';
+
+use MTG_Comparator\DB;
+
 // TODO hard-set price limit (for cards downloading) - e.g., do not bother with cards cheaper than $2
 // TODO rytir: buy = 70% of sell, valid for all cards?
 
@@ -76,8 +80,6 @@ td:first-child {
 </div>
 
 <?php
-
-require "connect.php";
 
 // number of non-matched editions for the div on top-right
 $nonmatched_editions_cnt = DB::query('select min(cnt) as nonmatched from (select count(*) as cnt from edition e join shop s on e.shop_id = s.id where not exists (select * from editions_pair where edition1 = e.id) group by s.id) as a')->fetchColumn();

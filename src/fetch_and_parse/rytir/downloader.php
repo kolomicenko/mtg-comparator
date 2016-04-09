@@ -1,10 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../downloader.php';
-require_once dirname(__FILE__) . '/parser.php';
-require_once dirname(__FILE__) . '/client.php';
+namespace MTG_Comparator\Fetch_and_parse\Rytir;
 
-class Rytir_Downloader extends Downloader {
+class Downloader extends MTG_Comparator\Fetch_and_parse\Downloader {
 
     public function get_url_by_page($page_nr) {
         $limit_placeholder = '__LIMIT__';
@@ -17,11 +15,11 @@ class Rytir_Downloader extends Downloader {
     }
 
     protected function get_parser($page_content) {
-        return new Rytir_Parser($page_content);
+        return new Parser($page_content);
     }
 
     protected function get_client() {
-        return new Rytir_Client();
+        return new Client();
     }
 
 }

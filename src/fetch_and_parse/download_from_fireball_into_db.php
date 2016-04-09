@@ -1,8 +1,9 @@
 <?php
 
 require_once '../core.php';
-require_once 'fireball/downloader.php';
-require_once 'fireball/matcher.php';
+
+use MTG_Comparator\Fetch_and_parse\Fireball as Fireball;
+use MTG_Comparator\Fetch_and_parse\Enum;
 
 require_once dirname(__FILE__) . "/enum.php";
 
@@ -15,7 +16,7 @@ for ($i = 0; $i < Enum::$WORKER_COUNT; $i++) {
 }
 
 // clear cards
-(new Fireball_Matcher())->clear_cards();
+(new Fireball\Matcher())->clear_cards();
 
 // start downloading
-(new Fireball_Downloader())->download();
+(new Fireball\Downloader())->download();

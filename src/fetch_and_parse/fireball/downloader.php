@@ -1,10 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../downloader.php';
-require_once dirname(__FILE__) . '/parser.php';
-require_once dirname(__FILE__) . '/client.php';
+namespace MTG_Comparator\Fetch_and_parse\Fireball;
 
-class Fireball_Downloader extends Downloader {
+class Downloader extends MTG_Comparator\Fetch_and_parse\Downloader {
 
     public function get_url_by_page($page_nr) {
         $page_placeholder = '__PAGE__';
@@ -14,11 +12,11 @@ class Fireball_Downloader extends Downloader {
     }
 
     protected function get_parser($page_content) {
-        return new Fireball_Parser($page_content);
+        return new Parser($page_content);
     }
 
     protected function get_client() {
-        return new Fireball_Client();
+        return new Client();
     }
 
 }

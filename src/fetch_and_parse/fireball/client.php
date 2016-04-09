@@ -1,9 +1,11 @@
 <?php
 
-require_once dirname(__FILE__) . '/../async/client.php';
-require_once dirname(__FILE__) . "/../enum.php";
+namespace MTG_Comparator\Fetch_and_parse\Fireball;
 
-class Fireball_Client extends Client {
+use MTG_Comparator\Fetch_and_parse\Enum;
+use MTG_Comparator\Fetch_and_parse\Async as Async;
+
+class Client extends Async\Client {
 
     protected function get_queue_name() {
         return Enum::$FIREBALL_QUEUE_NAME;

@@ -1,6 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . "/../connect.php";
+namespace MTG_Comparator\Fetch_and_parse;
+
+use MTG_Comparator\DB;
 
 abstract class Matcher {
 
