@@ -16,5 +16,5 @@ mysqldump -u "$MTG_MYSQL_USER" -p"$MTG_MYSQL_PASS" "$MTG_MYSQL_DB" | gzip > ../.
 # TODO: should we clean the two rabbitmq queues?
 
 # download the cards
-#nohup php download_from_fireball_into_db.php > ../../log/nohup_fireball.out 2>&1&
+nohup php download_from_fireball_into_db.php > ../../log/nohup_fireball.out 2>&1&
 nohup php download_from_rytir_into_db.php > ../../log/nohup_rytir.out 2>&1&
