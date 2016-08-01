@@ -9,7 +9,7 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
     private static $_QUALITY_MAP = array(
         "NM-Mint" => 'MINT',
         "Slightly Played" => 'LIGHTLY',
-        "Heavily Played" => 'HEAVILY',
+        "Moderately Played" => 'HEAVILY',
         "Damaged" => 'DAMAGED'
     );
 
