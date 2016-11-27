@@ -14,7 +14,7 @@ CREATE TABLE `card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shop_id` int(11) NOT NULL,
   `name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `is_foil` bit(1) NOT NULL,
+  `is_foil` tinyint(4) NOT NULL,
   `edition_id` int(11) NOT NULL,
   `quality` enum('MINT','LIGHTLY','HEAVILY','DAMAGED') COLLATE utf8_unicode_ci NOT NULL,
   `language` enum('English','Japanese','Portuguese','Chinese','Italian','Spanish','French','German','Russian','Korean') COLLATE utf8_unicode_ci NOT NULL,

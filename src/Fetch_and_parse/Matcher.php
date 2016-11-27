@@ -15,7 +15,7 @@ abstract class Matcher {
         try {
             $result = DB::query('INSERT INTO card(shop_id, name, is_foil, edition_id, quality, language, price, pieces, direction)
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                $this->get_shop_id(), $name, $is_foil, $edition_id, $quality, $language, $price, $pieces, $this->get_direction()
+                $this->get_shop_id(), $name, $is_foil ? 1 : 0, $edition_id, $quality, $language, $price, $pieces, $this->get_direction()
             );
         } catch (PDOException $e) {
             warning('Could not create new card with name "' . $name . '", error: ' . $e->getMessage());
