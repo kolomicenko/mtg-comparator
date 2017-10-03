@@ -69,7 +69,7 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
     }
 
     private function _parse_card_variant($variant, $card_name) {
-        if ($variant->getAttribute('class') != 'product-info-row variantRow') {
+        if ($variant->getAttribute('class') != 'product-info-row variantRow data-setter') {
             return null;
         }
 

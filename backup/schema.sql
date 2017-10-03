@@ -21,7 +21,14 @@ CREATE TABLE `card` (
   `price` float NOT NULL,
   `pieces` int(11) NOT NULL,
   `direction` enum('SELL','BUY') COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `is_foil` (`is_foil`),
+  KEY `quality` (`quality`),
+  KEY `language` (`language`),
+  KEY `pieces` (`pieces`),
+  KEY `shop_id` (`shop_id`),
+  KEY `direction` (`direction`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 

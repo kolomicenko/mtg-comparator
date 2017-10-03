@@ -19,5 +19,5 @@ SetEnv MTG_RABBITMQ_PASS guest
 8. sudo service rabbitmq-server start
 9. sudo rabbitmq-plugins enable rabbitmq_management
 
-Run
-src/Fetch_and_parse/download.sh
+Into cron:
+0 4 * * * ~/git/mtg-comparator/src/Fetch_and_parse/download.sh
