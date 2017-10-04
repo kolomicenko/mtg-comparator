@@ -11,7 +11,7 @@ $default_rate = 25.5;
 $default_limit = 0;
 
 if (!isset($_GET['rate']) or !isset($_GET['limit'])) {
-    header("location: $_SERVER[SCRIPT_NAME]?rate=" . $default_rate . "&limit=" . $default_limit);
+    header("location: ?rate=" . $default_rate . "&limit=" . $default_limit);
     exit;
 }
 
