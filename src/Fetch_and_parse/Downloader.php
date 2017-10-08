@@ -61,4 +61,7 @@ abstract class Downloader {
 
     // template method
     protected abstract function get_client();
+
+    // template method
+    protected abstract function get_shop_name();
 }

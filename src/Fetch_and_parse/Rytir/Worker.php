@@ -2,9 +2,6 @@
 
 namespace MTG_Comparator\Fetch_and_parse\Rytir;
 
-use MTG_Comparator\Fetch_and_parse\Enum;
-use MTG_Comparator\Fetch_and_parse\Async as Async;
-
 class Worker extends Async\Worker {
 
     private $_downloader = null;
@@ -20,7 +17,7 @@ class Worker extends Async\Worker {
     }
 
     protected function get_queue_name() {
-        return Enum::$RYTIR_QUEUE_NAME;
+        return Enum::$QUEUE_NAME;
     }
 
 }

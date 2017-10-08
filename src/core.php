@@ -12,7 +12,7 @@ function info($string) {
 
 function send_monitoring_mail($subject, $body) {
     return mail(
-        getenv('MTG_MONOTORING_RECIPIENT'),
+        getenv('MTG_MONITORING_RECIPIENT'),
         $subject,
         $body,
         'From: ' . getenv('MTG_MONITORING_SENDER')
