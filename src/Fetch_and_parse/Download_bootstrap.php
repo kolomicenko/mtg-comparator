@@ -2,8 +2,6 @@
 
 namespace MTG_Comparator\Fetch_and_parse;
 
-require_once '../core.php';
-
 use MTG_Comparator\Fetch_and_parse\Enum;
 
 class Download_bootstrap {

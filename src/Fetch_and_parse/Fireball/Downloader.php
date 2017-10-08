@@ -19,7 +19,7 @@ class Downloader extends \MTG_Comparator\Fetch_and_parse\Downloader {
         return new Client();
     }
 
-    protected function get_shop_name() {
+    public function get_shop_name() {
         return Enum::$SHOP_NAME;
     }
 
