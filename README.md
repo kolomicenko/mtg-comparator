@@ -12,6 +12,9 @@ SetEnv MTG_MYSQL_DB 1915239_mtg
 SetEnv MTG_MYSQL_USER mtg
 SetEnv MTG_MYSQL_PASS ***
 
+SetEnv MTG_MONITORING_RECIPIENT monitoring@example.com
+SetEnv MTG_MONITORING_SENDER monitoring@example.com
+
 SetEnv MTG_RABBITMQ_HOST localhost
 SetEnv MTG_RABBITMQ_USER guest
 SetEnv MTG_RABBITMQ_PASS guest

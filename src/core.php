@@ -9,3 +9,12 @@ function warning($string) {
 function info($string) {
     echo $string . "\n";
 }
+
+function send_monitoring_mail($subject, $body) {
+    return mail(
+        getenv('MTG_MONOTORING_RECIPIENT'),
+        $subject,
+        $body,
+        'From: ' . getenv('MTG_MONITORING_SENDER')
+    );
+}
