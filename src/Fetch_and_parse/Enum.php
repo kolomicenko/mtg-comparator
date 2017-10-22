@@ -9,7 +9,7 @@ abstract class Enum
     public static $DIRECTIONS = array('SELL','BUY');
     public static $CURRENCIES = array('KC','USD');
 
-    public static $CARDS_FOUND_MESSAGE = 'found';
+    public static $CARDS_FOUND_MESSAGE = 'found: %d';
     public static $CARDS_NOT_FOUND_MESSAGE = 'not_found';
     public static $CONFIRM_QUEUE_NAME_SUFFIX = '_confirm';
     public static $WORKER_COUNT = 10;

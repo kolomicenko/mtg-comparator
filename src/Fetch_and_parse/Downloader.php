@@ -29,10 +29,10 @@ abstract class Downloader {
             $page_content = $this->get_page($url);
 
             if ($page_content !== null) {
-                $cards_found = $this->get_parser($page_content)->parse_page();
+                $parsed_cards_count = $this->get_parser($page_content)->parse_page();
 
-                if ($cards_found) {
-                    return true;
+                if ($parsed_cards_count > 0) {
+                    return $parsed_cards_count;
                 }
             }
 
@@ -48,9 +48,16 @@ abstract class Downloader {
     public function download() {
         $start_time = time();
 
-        $this->get_client()->process();
+        $total_parsed_cards = $this->get_client()->process();
+        $total_time = time() - $start_time;
 
-        info("Total time in seconds: " . (time() - $start_time));
+        info(sprintf("Total time in seconds: %d", $total_time));
+        info(sprintf("Total parsed cards: %d", $total_parsed_cards));
+
+        return [
+            'time'  => $total_time,
+            'cards' => $total_parsed_cards
+        ];
     }
 
     // template method

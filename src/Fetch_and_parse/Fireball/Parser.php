@@ -65,7 +65,7 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
 
         $edition_id = $this->_matcher->process_edition($edition);
 
-        $this->_matcher->create_card($name, $is_foil, $edition_id, $quality, $language, $price, $pieces);
+        return $this->_matcher->create_card($name, $is_foil, $edition_id, $quality, $language, $price, $pieces);
     }
 
     private function _parse_card_variant($variant, $card_name) {
@@ -115,29 +115,33 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
 
         $card_variants = $info_container->getElementsByTagName('div');
 
+        $total_processed_count = 0;
+
         foreach ($card_variants as $variant) {
             $row = $this->_parse_card_variant($variant, $card_name);
 
             if ($row !== null) {
-                $this->_process_row($card_name, $card_edition, $row[0], $row[1], $row[2]);
+                if ($this->_process_row($card_name, $card_edition, $row[0], $row[1], $row[2]) === true) {
+                    $total_processed_count += 1;
+                }
             }
         }
+
+        return total_processed_count;
     }
 
     public function parse_page() {
         $articles = $this->dom->getElementsByTagName('article');
 
-        $card_exists = false;
+        $parsed_cards_count = 0;
         foreach ($articles as $article) {
             if ($article->getAttribute('class') != 'product_row   clearfix') {
                 continue;
             }
 
-            $card_exists = true;
-
-            $this->_parse_card($article);
+            $parsed_cards_count += $this->_parse_card($article);
         }
 
-        return $card_exists;
+        return $parsed_cards_count;
     }
 }

@@ -27,17 +27,19 @@ abstract class Client {
 
     public function process() {
         $page_nr = 1;
+        $total_parsed_cards = 0;
 
         $callback = function($msg) {
-            switch ($msg->body) {
-                case Enum::$CARDS_FOUND_MESSAGE:
-                    break;
-                case Enum::$CARDS_NOT_FOUND_MESSAGE:
-                    // no more cards were found, so do not create any more jobs
-                    $this->_create_new_jobs = false;
-                    break;
-                default:
+            if ($msg->body === Enum::$CARDS_NOT_FOUND_MESSAGE) {
+                // no more cards were found, so do not create any more jobs
+                $this->_create_new_jobs = false;
+            } else {
+                list($parsed_cards) = sscanf($msg->body, Enum::$CARDS_FOUND_MESSAGE);
+                if (!$parsed_cards > 0) {
                     warning('Unknown message was sent!');
+                } else {
+                    $total_parsed_cards += $parsed_cards;
+                }
             }
 
             // one job has just been finished
@@ -67,6 +69,8 @@ abstract class Client {
 
         $this->_channel->close();
         $this->_connection->close();
+
+        return $total_parsed_cards;
     }
 
     // create jobs up to the limit and send them to the queue

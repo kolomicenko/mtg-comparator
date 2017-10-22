@@ -22,7 +22,7 @@ abstract class Matcher {
             return null;
         }
 
-        // do not return anything (it is not needed now)
+        return true;
     }
 
     public function create_pairs_with_edition($edition_name, $edition_id) {

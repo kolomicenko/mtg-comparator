@@ -67,7 +67,7 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
 
         $edition_id = $this->_matcher->process_edition($edition);
 
-        $this->_matcher->create_card($name, $is_foil, $edition_id, $quality, $language, $price, $pieces);
+        return $this->_matcher->create_card($name, $is_foil, $edition_id, $quality, $language, $price, $pieces);
     }
 
     private function _parse_card_link($link) {
@@ -82,13 +82,13 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
         $price_td = $pieces_td->nextSibling->nextSibling; // there's an extra text node
         $card_price = preg_replace('/[^0-9]/', '', $price_td->nodeValue);
 
-        $this->_process_row($card_name, $card_edition, $card_pieces, $card_price);
+        return $this->_process_row($card_name, $card_edition, $card_pieces, $card_price);
     }
 
     public function parse_page() {
         $links = $this->dom->getElementsByTagName('a');
 
-        $card_exists = false;
+        $parsed_cards_count = 0;
         foreach ($links as $link) {
             #echo $link->getAttribute('class'); // on prod, all anchors have "menulink" class. Even though the string of the page says otherwise
 
@@ -96,11 +96,11 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
                 continue;
             }
 
-            $card_exists = true;
-
-            $this->_parse_card_link($link);
+            if ($this->_parse_card_link($link)) {
+                $parsed_cards_count += 1;
+            }
         }
 
-        return $card_exists;
+        return $parsed_cards_count;
     }
 }

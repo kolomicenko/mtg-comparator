@@ -32,9 +32,9 @@ abstract class Worker {
             $url = $downloader->get_url_by_page($page_nr);
 
             // parse the page and send back the result
-            if ($downloader->get_and_parse_page($url)) {
+            if ($parsed_cards = $downloader->get_and_parse_page($url)) {
                 info("Page " . $page_nr . " processed.");
-                $this->_confirm_back_to_client(Enum::$CARDS_FOUND_MESSAGE);
+                $this->_confirm_back_to_client(sprintf(Enum::$CARDS_FOUND_MESSAGE, $parsed_cards));
             } else {
                 info("No more cards found.");
                 $this->_confirm_back_to_client(Enum::$CARDS_NOT_FOUND_MESSAGE);

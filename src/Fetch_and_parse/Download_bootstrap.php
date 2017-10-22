@@ -29,9 +29,9 @@ class Download_bootstrap {
         // clear cards
         $this->_matcher->clear_cards();
         // start downloading
-        $this->_downloader->download();
+        $result = $this->_downloader->download();
 
-        $this->_send_result_info();
+        $this->_send_result_info($result);
     }
 
     private function _terminate_workers() {
@@ -46,8 +46,18 @@ class Download_bootstrap {
         }
     }
 
-    private function _send_result_info() {
-        send_monitoring_mail($this->_downloader->get_shop_name().' downloaded', file_get_contents($this->_log_file));
+    private function _send_result_info($result) {
+        if ($result === null) {
+            $content = file_get_contents($this->_log_file);
+        } else {
+            $content = sprintf(
+                '%d cards downloaded in %d seconds.',
+                $result['cards'],
+                $result['time']
+            );
+        }
+
+        send_monitoring_mail($this->_downloader->get_shop_name().' downloaded', $content);
     }
 
 }
