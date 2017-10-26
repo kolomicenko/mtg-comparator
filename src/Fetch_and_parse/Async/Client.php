@@ -22,7 +22,7 @@ abstract class Client {
         $page_nr = 1;
         $total_parsed_cards = 0;
 
-        $callback = function($msg) {
+        $callback = function($msg) use (&$total_parsed_cards) {
             if ($msg->body === Enum::$CARDS_NOT_FOUND_MESSAGE) {
                 // no more cards were found, so do not create any more jobs
                 $this->_create_new_jobs = false;

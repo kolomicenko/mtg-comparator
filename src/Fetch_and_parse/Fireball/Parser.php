@@ -127,7 +127,7 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
             }
         }
 
-        return total_processed_count;
+        return $total_processed_count;
     }
 
     public function parse_page() {
