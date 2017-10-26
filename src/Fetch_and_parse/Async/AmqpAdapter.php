@@ -5,7 +5,7 @@ namespace MTG_Comparator\Fetch_and_parse\Async;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class AmqpAdapter {
+class AmqpAdapter implements Adapter{
     private $_connection = null;
     private $_channel = null;
 

@@ -8,7 +8,7 @@ abstract class Worker {
     private $_channel = null;
     private $_adapter = null;
 
-    function __construct($adapter) {
+    function __construct(Adapter $adapter) {
         $this->_adapter = $adapter;
         $this->_channel = $adapter->connect();
 
