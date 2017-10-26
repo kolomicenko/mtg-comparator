@@ -23,11 +23,16 @@ class Download_bootstrap {
     }
 
     public function run() {
+        // clear existing job queues
+        $this->_downloader->clear_queues();
+
+        // clear and start workers
         $this->_terminate_workers();
         $this->_start_workers();
 
         // clear cards
         $this->_matcher->clear_cards();
+
         // start downloading
         $result = $this->_downloader->download();
 

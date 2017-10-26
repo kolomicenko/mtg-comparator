@@ -11,7 +11,7 @@ class Worker extends Async\Worker {
     function __construct() {
         $this->_downloader = new Downloader();
 
-        parent::__construct();
+        parent::__construct(new Async\AmqpAdapter());
     }
 
     protected function get_downloader() {

@@ -60,6 +60,10 @@ abstract class Downloader {
         ];
     }
 
+    public function clear_queues() {
+        $this->get_client()->delete_queues();
+    }
+
     // template method
     public abstract function get_url_by_page($page_nr);
 

@@ -4,22 +4,15 @@ namespace MTG_Comparator\Fetch_and_parse\Async;
 
 use MTG_Comparator\Fetch_and_parse\Enum;
 
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
-
 abstract class Client {
-    private $_connection = null;
+    private $_adapter = null;
     private $_channel = null;
     private $_active_jobs = 0;
     private $_create_new_jobs = true;
 
-    function __construct() {
-        $host = getenv('MTG_RABBITMQ_HOST');
-        $user = getenv('MTG_RABBITMQ_USER');
-        $pass = getenv('MTG_RABBITMQ_PASS');
-
-        $this->_connection = new AMQPStreamConnection($host, 5672, $user, $pass);
-        $this->_channel = $this->_connection->channel();
+    function __construct(Adapter $adapter) {
+        $this->_adapter = $adapter;
+        $this->_channel = $adapter->connect();
 
         $this->_channel->queue_declare($this->get_queue_name(), false, false, false, false);
         $this->_channel->queue_declare($this->_get_confirm_queue_name(), false, false, false, false);
@@ -67,10 +60,16 @@ abstract class Client {
             $this->_channel->wait();
         }
 
-        $this->_channel->close();
-        $this->_connection->close();
+        $this->_adapter->close();
 
         return $total_parsed_cards;
+    }
+
+    public function delete_queues() {
+        $this->_channel->queue_delete($this->get_queue_name());
+        $this->_channel->queue_delete($this->_get_confirm_queue_name());
+
+        $this->_adapter->close();
     }
 
     // create jobs up to the limit and send them to the queue
@@ -84,7 +83,7 @@ abstract class Client {
     }
 
     private function _send_job_to_queue($text) {
-        $msg = new AMQPMessage($text);
+        $msg = $this->_adapter->create_message($text);
         $this->_channel->basic_publish($msg, '', $this->get_queue_name());
     }
 

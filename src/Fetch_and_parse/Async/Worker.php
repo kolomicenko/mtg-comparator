@@ -4,20 +4,13 @@ namespace MTG_Comparator\Fetch_and_parse\Async;
 
 use MTG_Comparator\Fetch_and_parse\Enum;
 
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
-
 abstract class Worker {
     private $_channel = null;
-    private $_connection = null;
+    private $_adapter = null;
 
-    function __construct() {
-        $host = getenv('MTG_RABBITMQ_HOST');
-        $user = getenv('MTG_RABBITMQ_USER');
-        $pass = getenv('MTG_RABBITMQ_PASS');
-
-        $this->_connection = new AMQPStreamConnection($host, 5672, $user, $pass);
-        $this->_channel = $this->_connection->channel();
+    function __construct($adapter) {
+        $this->_adapter = $adapter;
+        $this->_channel = $adapter->connect();
 
         $this->_channel->queue_declare($this->get_queue_name(), false, false, false, false);
         $this->_channel->queue_declare($this->_get_confirm_queue_name(), false, false, false, false);
@@ -51,12 +44,11 @@ abstract class Worker {
             $this->_channel->wait();
         }
 
-        $this->_channel->close();
-        $this->_connection->close();
+        $this->_adapter->close();
     }
 
     private function _confirm_back_to_client($text) {
-        $msg = new AMQPMessage($text);
+        $msg = $this->_adapter->create_message($text);
         $this->_channel->basic_publish($msg, '', $this->_get_confirm_queue_name());
     }
 
