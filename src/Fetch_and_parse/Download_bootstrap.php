@@ -23,11 +23,13 @@ class Download_bootstrap {
     }
 
     public function run() {
-        // clear existing job queues
+        // clear workers
+        $this->_terminate_workers();
+
+        // clear existing job queues (afrer workers are dead so their channels are not cancelled)
         $this->_downloader->clear_queues();
 
-        // clear and start workers
-        $this->_terminate_workers();
+        // start workers
         $this->_start_workers();
 
         // clear cards
