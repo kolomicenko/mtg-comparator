@@ -32,6 +32,7 @@ abstract class Client {
                     warning('Unknown message was sent!');
                 } else {
                     $total_parsed_cards += $parsed_cards;
+                    $this->_create_new_jobs = true;
                 }
             }
 
