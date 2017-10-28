@@ -23,7 +23,11 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
         $language = Enum::$LANGUAGES[0];
         $quality = Enum::$QUALITIES[0];
 
-        list ($name, $variant) = explode(' - ', $name);
+        if (strpos($name, ' - ') === false) {
+            $variant = null;
+        } else {
+            list ($name, $variant) = explode(' - ', $name);
+        }
 
         if ($variant != null) {
             $variants = explode(' / ', $variant);
