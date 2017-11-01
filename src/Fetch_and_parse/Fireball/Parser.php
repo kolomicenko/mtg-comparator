@@ -108,6 +108,12 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
 
     private function _parse_card($article) {
         $info_container = $article->firstChild->nextSibling->nextSibling;
+
+        if (is_null($info_container)) {
+            warning('Empty info container for: ' . $article->ownerDocument->saveXML($article));
+            return 0;
+        }
+
         $info_container_h2 = $info_container->firstChild->nextSibling->firstChild->nextSibling;
 
         $card_name = $info_container_h2->firstChild->nodeValue;
