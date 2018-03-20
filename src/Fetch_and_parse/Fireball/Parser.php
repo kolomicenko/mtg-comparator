@@ -102,6 +102,11 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
 
         $variant_stock = preg_replace('/[^0-9]/', '', $spans[2]->nodeValue);
 
+        if (!is_numeric($variant_stock)) {
+            warning('Wrong available amount of card "' . $card_name . '"');
+            return null;
+        }
+
         return array($variant_info, $variant_price, $variant_stock);
 
     }
@@ -130,6 +135,8 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
                 if ($this->_process_row($card_name, $card_edition, $row[0], $row[1], $row[2]) === true) {
                     $total_processed_count += 1;
                 }
+            } else {
+                warning('Illegal card variant for: ' . $article->ownerDocument->saveXML($article));
             }
         }
 
