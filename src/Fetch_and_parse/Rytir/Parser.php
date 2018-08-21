@@ -80,10 +80,10 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
         $edition_td = $link->parentNode->nextSibling;
         $card_edition = str_replace('´', "'", trim($edition_td->nodeValue));
 
-        $pieces_td = $edition_td->nextSibling->nextSibling; // there's an extra text node
+        $pieces_td = $edition_td->nextSibling;
         $card_pieces = preg_replace('/[^0-9]/', '', $pieces_td->nodeValue);
 
-        $price_td = $pieces_td->nextSibling->nextSibling; // there's an extra text node
+        $price_td = $pieces_td->nextSibling;
         $card_price = preg_replace('/[^0-9]/', '', $price_td->nodeValue);
 
         return $this->_process_row($card_name, $card_edition, $card_pieces, $card_price);
