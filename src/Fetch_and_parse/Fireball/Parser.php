@@ -50,15 +50,11 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
     }
 
     private function _adjust_price($price) {
-        if ($price[0] == '.') {
-            $price = '0' . $price;
-        }
-
-        return $price;
+        return ltrim($price, '$');
     }
 
-    private function _process_row($name, $edition, $variant, $price, $pieces) {
-        list ($quality, $language) = $this->_process_variant($variant);
+    private function _process_card($name, $edition, $variant, $price, $pieces) {
+        list($quality, $language) = $this->_process_variant($variant);
         list($name, $is_foil) = $this->_process_card_name($name);
 
         $price = $this->_adjust_price($price);
@@ -68,91 +64,60 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
         return $this->_matcher->create_card($name, $is_foil, $edition_id, $quality, $language, $price, $pieces);
     }
 
-    private function _parse_card_variant($variant, $card_name) {
-        if ($variant->getAttribute('class') != 'product-info-row variantRow data-setter') {
-            return null;
+    private function _parse_card($form) {
+		static $already_parsed = [];
+
+		$unique_id = $form->getAttribute('data-vid');
+
+		if ($unique_id == '') {
+			return false; // the item is out of stock
+		}
+
+		if (isset($already_parsed[$unique_id])) {
+			return false; // zero parsed cards (skipping this as a wrong multiple entry)
+		}
+
+		$already_parsed[$unique_id] = 1;
+
+		$card_name = $form->getAttribute('data-name');
+		$card_price = $form->getAttribute('data-price');
+		$card_edition = $form->getAttribute('data-category');
+		$card_variant = $form->getAttribute('data-variant');
+		$card_pieces = 0;
+
+		$inputs = $form->getElementsByTagName('input');
+		foreach ($inputs as $input) {
+			if ($input->getAttribute('class') == 'qty') {
+				 $card_pieces = $input->getAttribute('max');
+			}
+		}
+
+		if ($card_pieces <= 0) {
+			warning('Illegal card quantity for: ' . $card_name);
+			return false;
+		}
+
+        if ($this->_process_card($card_name, $card_edition, $card_variant, $card_price, $card_pieces)) {
+        	return true;
         }
 
-        $span_nodelist = $variant->getElementsByTagName('span');
-        $spans = array();
-        foreach ($span_nodelist as $span) {
-            $spans[] = $span;
-        }
+      	warning('Illegal card variant for: ' . $form->ownerDocument->saveXML($form));
 
-        if (count($spans) < 3) {
-            warning('Could not parse variant of card with name "' . $card_name . '"');
-            return null;
-        }
-
-        $variant_info = trim($spans[0]->nodeValue);
-
-        $variant_price = null;
-        $price_elements = $spans[1]->getElementsByTagName('strong');
-        foreach ($price_elements as $price_element) {
-            // <strong> with class "msrp" indicates older (and higher) price
-            if ($price_element->getAttribute('class') != 'msrp') {
-                $variant_price = preg_replace("/([^0-9\\.])/i", "", $price_element->nodeValue);
-            }
-        }
-
-        if ($variant_price === null) {
-            warning('Could not parse price of card with name "' . $card_name . '"');
-            return null;
-        }
-
-        $variant_stock = preg_replace('/[^0-9]/', '', $spans[2]->nodeValue);
-
-        if (!is_numeric($variant_stock)) {
-            warning('Wrong available amount of card "' . $card_name . '"');
-            return null;
-        }
-
-        return array($variant_info, $variant_price, $variant_stock);
-
-    }
-
-    private function _parse_card($article) {
-        $info_container = $article->firstChild->nextSibling->nextSibling;
-
-        if (is_null($info_container)) {
-            warning('Empty info container for: ' . $article->ownerDocument->saveXML($article));
-            return 0;
-        }
-
-        $info_container_h2 = $info_container->firstChild->nextSibling->firstChild->nextSibling;
-
-        $card_name = $info_container_h2->firstChild->nodeValue;
-        $card_edition = $info_container_h2->firstChild->nextSibling->nextSibling->nodeValue;
-
-        $card_variants = $info_container->getElementsByTagName('div');
-
-        $total_processed_count = 0;
-
-        foreach ($card_variants as $variant) {
-            $row = $this->_parse_card_variant($variant, $card_name);
-
-            if ($row !== null) {
-                if ($this->_process_row($card_name, $card_edition, $row[0], $row[1], $row[2]) === true) {
-                    $total_processed_count += 1;
-                }
-            } else {
-                warning('Illegal card variant for: ' . $article->ownerDocument->saveXML($article));
-            }
-        }
-
-        return $total_processed_count;
+        return false;
     }
 
     public function parse_page() {
-        $articles = $this->dom->getElementsByTagName('article');
+        $forms = $this->dom->getElementsByTagName('form');
 
         $parsed_cards_count = 0;
-        foreach ($articles as $article) {
-            if ($article->getAttribute('class') != 'product_row   clearfix') {
+        foreach ($forms as $form) {
+            if ($form->getAttribute('class') != 'add-to-cart-form') {
                 continue;
             }
 
-            $parsed_cards_count += $this->_parse_card($article);
+            if ($this->_parse_card($form)) {
+            	$parsed_cards_count ++;
+            }
         }
 
         return $parsed_cards_count;
