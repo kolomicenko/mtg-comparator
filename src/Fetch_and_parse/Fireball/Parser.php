@@ -50,7 +50,7 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
     }
 
     private function _adjust_price($price) {
-        return ltrim($price, '$');
+        return str_replace(',', '', ltrim($price, '$'));
     }
 
     private function _process_card($name, $edition, $variant, $price, $pieces) {
