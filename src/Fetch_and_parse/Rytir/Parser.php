@@ -83,8 +83,18 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
         $pieces_td = $edition_td->nextSibling;
         $card_pieces = preg_replace('/[^0-9]/', '', $pieces_td->nodeValue);
 
+        if (!$card_pieces) {
+            warning('Unknown count: ' . $pieces_td->nodeValue);
+            return null;
+        }
+
         $price_td = $pieces_td->nextSibling;
         $card_price = preg_replace('/[^0-9]/', '', $price_td->nodeValue);
+
+        if (!$card_price) {
+            warning('Unknown price: ' . $price_td->nodeValue);
+            return null;
+        }
 
         return $this->_process_row($card_name, $card_edition, $card_pieces, $card_price);
     }
