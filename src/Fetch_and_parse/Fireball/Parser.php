@@ -10,11 +10,12 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
         "Near Mint" => 'MINT',
         "Lightly Played" => 'LIGHTLY',
         "Moderately Played" => 'HEAVILY',
-        "Damaged" => 'DAMAGED'
+        "Damaged" => 'DAMAGED',
+        "Heavily Played" => 'DAMAGED',
     );
 
     function __construct($payload) {
-        $this->_payload = json_decode($payload);
+        $this->_payload = json_decode($payload, true);
 
         $this->_matcher = new Matcher();
     }
@@ -25,14 +26,14 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
         $quality = $variant['title'];
         $is_foil = substr($quality, -4) === 'Foil';
         if ($is_foil) {
-            $quality = substr($quality, 0, strlen($str) - 5);
+            $quality = substr($quality, 0, strlen($quality) - 5);
         }
 
-        $quality = self::$_QUALITY_MAP[$quality];
-
-        if (!in_array($quality, Enum::$QUALITIES)) {
+        if (!array_key_exists($quality, self::$_QUALITY_MAP)) {
             warning('Quality "' . $quality . '" is not supported');
-            $quality = Enum::$QUALITIES[0];
+            $quality = self::$_QUALITY_MAP['Damaged'];
+        } else {
+            $quality = self::$_QUALITY_MAP[$quality];        	
         }
 
         if ($variant['quantity'] <= 0) {

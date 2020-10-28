@@ -13,7 +13,7 @@ class Downloader extends \MTG_Comparator\Fetch_and_parse\Downloader {
 
         $url = str_replace($limit_placeholder, strval($limit), $core_url);
 
-        return file_get_contents($url);
+        return [file_get_contents($url), $http_response_header];
     }
 
     protected function get_parser($page_content) {

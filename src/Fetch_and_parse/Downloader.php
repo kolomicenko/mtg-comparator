@@ -50,7 +50,7 @@ abstract class Downloader {
         $attempts = 3;
 
         while ($attempts > 0) {
-            $page = $this->download_page($page_nr);
+            list($page, $http_response_header) = $this->download_page($page_nr);
 
             if (strpos($http_response_header[0], '200') !== false) {
                 return $page;

@@ -20,7 +20,7 @@ class Downloader extends \MTG_Comparator\Fetch_and_parse\Downloader {
 
         $context  = stream_context_create($opts);
 
-        return file_get_contents('https://advanced-search.binderpos.com/advancedSearch', false, $context);
+        return [file_get_contents('https://advanced-search.binderpos.com/advancedSearch', false, $context), $http_response_header];
     }
 
     protected function get_parser($page_content) {
