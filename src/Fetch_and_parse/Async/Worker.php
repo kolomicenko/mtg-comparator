@@ -22,10 +22,9 @@ abstract class Worker {
 
             // the message contains the page_nr only
             $page_nr = intval($msg->body);
-            $url = $downloader->get_url_by_page($page_nr);
 
             // parse the page and send back the result
-            if ($parsed_cards = $downloader->get_and_parse_page($url)) {
+            if ($parsed_cards = $downloader->get_and_parse_page($page_nr)) {
                 info("Page " . $page_nr . " processed.");
                 $this->_confirm_back_to_client(sprintf(Enum::$CARDS_FOUND_MESSAGE, $parsed_cards));
             } else {

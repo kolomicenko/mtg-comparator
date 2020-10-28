@@ -6,13 +6,16 @@ use MTG_Comparator\Fetch_and_parse\Enum;
 
 class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
 
+    private $_dom = null;
+
     private static $_QUALITY_MAP = array(
         "lightly played" => 'LIGHTLY',
         "moderately played" => 'HEAVILY'
     );
 
     function __construct($html) {
-        parent::__construct($html);
+        $this->_dom = new \DOMDocument;
+        @$this->_dom->loadHTML($html);
 
         $this->_matcher = new Matcher();
     }
@@ -100,7 +103,7 @@ class Parser extends \MTG_Comparator\Fetch_and_parse\Parser {
     }
 
     public function parse_page() {
-        $links = $this->dom->getElementsByTagName('a');
+        $links = $this->_dom->getElementsByTagName('a');
 
         $parsed_cards_count = 0;
         foreach ($links as $link) {
